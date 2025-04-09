@@ -2,6 +2,7 @@ io.stdout:setvbuf('no')
 
 local TextCard = require("TextCard")
 local DropZone = require("DropZone")
+local CSVReader = require("CSVReader")
 
 local cards = {}
 local dropZone
@@ -10,14 +11,19 @@ local destroyedCardText = ""
 function love.load()
     love.graphics.setFont(love.graphics.newFont(14)) -- Set font size for the text
 
+    -- Create csv reader and read cards
+    reader = CSVReader.new()
+    local cardData = reader:read("Cards.csv")
+    local row = cardData[1]
+    
     -- Create the drop zone
     dropZone = DropZone:new(150, 50, 500, 100)
 
     -- Create 4 cards in the lower half of the screen
-    table.insert(cards, TextCard:new(100, 400, 200, 50, "Card 1"))
-    table.insert(cards, TextCard:new(350, 400, 200, 50, "Card 2"))
-    table.insert(cards, TextCard:new(100, 500, 200, 50, "Card 3"))
-    table.insert(cards, TextCard:new(350, 500, 200, 50, "Card 4"))
+    table.insert(cards, TextCard:new(100, 400, 200, 50, row["Card 1"]))
+    table.insert(cards, TextCard:new(350, 400, 200, 50, row["Card 2"]))
+    table.insert(cards, TextCard:new(100, 500, 200, 50, row["Card 3"]))
+    table.insert(cards, TextCard:new(350, 500, 200, 50, row["Card 4"]))
 end
 
 function love.draw()
