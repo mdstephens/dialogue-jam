@@ -1,13 +1,14 @@
 local TextCard = {}
 TextCard.__index = TextCard
 
-function TextCard:new(x, y, width, height, text)
+function TextCard:new(x, y, width, height, text, key)
     local instance = setmetatable({}, TextCard)
     instance.x = x
     instance.y = y
     instance.width = width
     instance.height = height
     instance.text = text
+    instance.key = key
     instance.isDragging = false
     instance.offsetX = 0
     instance.offsetY = 0
