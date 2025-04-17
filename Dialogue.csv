@@ -1,0 +1,16 @@
+Key,Prompt,Resp1,Resp2,Resp3,Resp4,Key1,Key2,Key3,Key4
+1,"Hello, how are you?",Fine.,Good. And you?,Who are you?,What is this?,11,11,13,14
+11,Okay.,Who are you?,What is this?,,,13,14,,
+13,How can you ask this?,What do you mean?,I would like to know who I'm talking to.,What is this?,,131,131,14,
+14,It makes sense you would ask this.,Tell me.,Why?,,,141,131211,,
+131,Knowing someone else's identity is illegal. How do you not know that?,I'm sorry. I didn't know.,I'm not talking to someone I don't know.,What is this?,,1311,1312,14,
+1311,I forget that reentry can be disorienting.,Reentry?,Yeah. I'm not sure where I am.,,,14,13111,,
+1312,I'm trying to help you.,I don't need your help.,What is this?,,,13121,14,,
+13111,They must have reset you much further back.,Reset me?,Further back?,I'm lost.,,131211,131112,131113,
+13121,Then how will you return to your body?,My body?,Where am I?,,,131211,14,,
+131112,You are suspended.,I didn't do anything wrong!,Suspended from what?,,,1311,131211,,
+131112,Aren't we all.,Yeah.,Where am I?,,,1311121,14,,
+131211,It's a part of the process. Justice only requires your core. ,Justice?,What is going on?,,,1311,14,,
+1311121,So you admit it?,Yeah. I'm not sure where I am.,I don't admit to anything.,,,13111,13111212,,
+13111212,I wouldn't expect you to.,What does that mean?,,,,14,,,
+141,It's time.,Time for what?,Wait.,,,,,,
