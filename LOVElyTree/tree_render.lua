@@ -2,10 +2,10 @@ local module = (...):match("(.-)[^%.]+$")
 local RESULT = require(module .. "result")
 
 local BOX_HEIGHT = 40
-local HORIZONTAL_SPACING = 20
-local VERTICAL_SPACING = 50
-local CORNER_RADIUS = 10
-local MIN_BOX_WIDTH = 120
+local HORIZONTAL_SPACING = 10 -- Reduced from 20
+local VERTICAL_SPACING = 40   -- Reduced from 50
+local CORNER_RADIUS = 8       -- Slightly smaller radius
+local MIN_BOX_WIDTH = 100     -- Slightly smaller min width
 
 local function measure_node_text(node)
   local font = love.graphics.getFont()
@@ -143,7 +143,9 @@ local function render_tree_from_layout(data)
   love.graphics.setColor(col[1], col[2], col[3], 1)
   love.graphics.rectangle("line", data.x, data.y, data.width, BOX_HEIGHT, CORNER_RADIUS, CORNER_RADIUS)
   local display_status = RESULT.to_string(data.node.status)
-  love.graphics.printf(data.node.node_type .. "\n" .. display_status, data.x, data.y + 5, data.width, "center")
+  -- Use node.prompt if available, otherwise fallback to node_type
+  local node_text = data.node.prompt or data.node.node_type or "Node"
+  love.graphics.printf(node_text .. "\n" .. display_status, data.x, data.y + 5, data.width, "center")
 end
 
 local function draw_tree(node, x, y)
