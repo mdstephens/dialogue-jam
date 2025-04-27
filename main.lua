@@ -13,18 +13,19 @@ local dialogueTree
 
 function love.load()
     -- Set font size for the text
-    love.graphics.setFont(love.graphics.newFont(14))
+    local font = love.graphics.newFont("x14y24pxHeadUpDaisy.ttf", 28) -- Thanks @hicchicc for the font
+    love.graphics.setFont(font) -- Set the font as the active font
 
-    --Set moonshine shaders
+    -- Set moonshine shaders
     effect = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt).chain(moonshine.effects.glow)
-    effect.scanlines.opacity=0.6
+    effect.scanlines.opacity = 0.6
     effect.glow.min_luma = 0.2
 
     -- Calculate dynamic position for the drop zone
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
-    local dropZoneWidth = 700
-    local dropZoneHeight = 200
+    local dropZoneWidth = 900
+    local dropZoneHeight = 300
     local dropZoneX = (screenWidth - dropZoneWidth) / 2
     local dropZoneY = screenHeight / 3 - dropZoneHeight / 2
 
@@ -50,8 +51,8 @@ function loadDialogueElem(prompt, responses)
     local screenHeight = love.graphics.getHeight()
 
     -- Define card dimensions
-    local cardWidth = 300
-    local cardHeight = 100
+    local cardWidth = 500
+    local cardHeight = 175
 
     -- Calculate positions dynamically
     local cardXOffsets = {screenWidth * 0.3, screenWidth * 0.7, screenWidth * 0.3, screenWidth * 0.7}
