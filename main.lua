@@ -20,10 +20,12 @@ function love.load()
     -- Set moonshine shaders
     effect = moonshine(moonshine.effects.scanlines).chain(
                         moonshine.effects.crt).chain(
-                        moonshine.effects.glow)
+                        moonshine.effects.glow).chain(
+                        moonshine.effects.chromasep)
+    effect.crt.distortionFactor = {1.05, 1.06}
     effect.scanlines.opacity = 0.6
+    effect.glow.strength = 15
     effect.glow.min_luma = 0.2
-
 
     -- Load the starfield shader
     starfieldShader = love.graphics.newShader("starfield.glsl")
