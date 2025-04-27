@@ -7,7 +7,6 @@ local moonshine = require 'moonshine'
 
 local cards = {}
 local dropZone
-local destroyedCardText = ""
 local promptText = ""
 local dialogueTree
 local starfieldShader
@@ -120,7 +119,6 @@ function love.mousereleased(x, y, button, istouch, presses)
         if dropZone:isInside(card.x, card.y, card.width, card.height) then
             if card.key ~= "" then
                 print("Took route " .. card.key .. ".")
-                destroyedCardText = card.key -- Update the text box with the card's name
                 table.remove(cards, i) -- Remove the card from the list
                 loadDialogueElem(dialogueTree[card.key][1], dialogueTree[card.key][2])
             else
