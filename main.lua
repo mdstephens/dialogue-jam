@@ -18,9 +18,12 @@ function love.load()
     love.graphics.setFont(font) -- Set the font as the active font
 
     -- Set moonshine shaders
-    effect = moonshine(moonshine.effects.scanlines).chain(moonshine.effects.crt).chain(moonshine.effects.glow)
+    effect = moonshine(moonshine.effects.scanlines).chain(
+                        moonshine.effects.crt).chain(
+                        moonshine.effects.glow)
     effect.scanlines.opacity = 0.6
     effect.glow.min_luma = 0.2
+
 
     -- Load the starfield shader
     starfieldShader = love.graphics.newShader("starfield.glsl")
