@@ -10,6 +10,7 @@ local dropZone
 local destroyedCardText = ""
 local promptText = ""
 local dialogueTree
+local starfieldShader
 
 function love.load()
     -- Set font size for the text
@@ -21,9 +22,15 @@ function love.load()
     effect.scanlines.opacity = 0.6
     effect.glow.min_luma = 0.2
 
-    -- Calculate dynamic position for the drop zone
+    -- Load the starfield shader
+    starfieldShader = love.graphics.newShader("starfield.glsl")
+
+    -- Send resolution to the shader
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
+    starfieldShader:send("resolution", {screenWidth, screenHeight})
+
+    -- Calculate dynamic position for the drop zone
     local dropZoneWidth = 900
     local dropZoneHeight = 300
     local dropZoneX = (screenWidth - dropZoneWidth) / 2
@@ -69,7 +76,16 @@ end
 
 function love.draw()
 
+
+    -- Apply moonshine effects and draw other elements
     effect(function()
+
+        -- Apply the starfield shader
+        love.graphics.setShader(starfieldShader)
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.setShader() -- Reset the shader
+
+
         -- Draw the drop zone
         dropZone:draw()
 
@@ -111,6 +127,12 @@ function love.mousereleased(x, y, button, istouch, presses)
 end
 
 function love.update(dt)
+    -- Update time for the shader
+    if starfieldShader then
+        starfieldShader:send("time", love.timer.getTime()) -- Pass the current time to the shader
+    end
+
+    -- Update all cards
     for _, card in ipairs(cards) do
         card:update(dt) -- Pass dt to each card's update method
     end
