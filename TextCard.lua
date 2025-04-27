@@ -26,11 +26,27 @@ function TextCard:draw()
     love.graphics.setColor(0.5, 0.5, 0.8)
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 
-    -- Draw the text inside the rectangle
+    -- Draw the text inside the rectangle with word wrapping and vertical centering
     love.graphics.setColor(1, 1, 1)
-    local textWidth = love.graphics.getFont():getWidth(self.text)
-    local textHeight = love.graphics.getFont():getHeight()
-    love.graphics.print(self.text, self.x + (self.width - textWidth) / 2, self.y + (self.height - textHeight) / 2)
+    local padding = 10 -- Add some padding around the text
+    local font = love.graphics.getFont()
+    local maxWidth = self.width - 2 * padding -- Maximum width for wrapping
+
+    -- Calculate wrapped text and total height
+    local _, wrappedText = font:getWrap(self.text, maxWidth)
+    local textHeight = #wrappedText * font:getHeight()
+
+    -- Calculate vertical offset to center the text
+    local verticalOffset = (self.height - textHeight) / 2
+
+    -- Draw the wrapped text
+    love.graphics.printf(
+        self.text, -- The text to draw
+        self.x + padding, -- X position with padding
+        self.y + verticalOffset, -- Y position with vertical centering
+        maxWidth, -- Maximum width for wrapping
+        "center" -- Align the text to the center
+    )
 end
 
 function TextCard:mousepressed(x, y, button)
