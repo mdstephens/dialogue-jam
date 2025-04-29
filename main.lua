@@ -88,9 +88,16 @@ function love.update(dt)
         mainMenu:update(dt)
     elseif currentState == "game" then
         -- Update all cards
-        for _, card in ipairs(cards) do
-            card:update(dt) -- Pass dt to each card's update method
+        local isAnyCardInside = false
+        for _, card in ipairs(cards) do -- Use the global `cards` variable
+            card:update(dt)
+            if dropZone:isInside(card.x, card.y, card.width, card.height) then -- Use the global `dropZone` variable
+                isAnyCardInside = true
+                break
+            end
         end
+        -- Toggle the glow effect based on card overlap
+        dropZone:setGlowing(isAnyCardInside) -- Use the global `dropZone` variable
     end
 end
 

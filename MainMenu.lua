@@ -28,9 +28,18 @@ function MainMenu:new()
 end
 
 function MainMenu:update(dt)
+    
+    local isAnyCardInside = false
     for _, card in ipairs(self.cards) do
         card:update(dt)
+        if self.dropZone:isInside(card.x, card.y, card.width, card.height) then
+            isAnyCardInside = true
+            break
+        end
     end
+    -- Toggle the glow effect based on card overlap
+    self.dropZone:setGlowing(isAnyCardInside)
+
 end
 
 function MainMenu:draw()

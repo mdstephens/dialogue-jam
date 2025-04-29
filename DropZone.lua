@@ -1,3 +1,5 @@
+local moonshine = require("moonshine")
+
 local DropZone = {}
 DropZone.__index = DropZone
 
@@ -13,12 +15,26 @@ function DropZone:new(x, y)
     instance.width = DropZone.width -- Use class-level width
     instance.height = DropZone.height -- Use class-level height
     instance.textY = instance.y - DropZone.TextOffset -- Y position for the text above the drop zone
+    instance.isGlowing = false -- Whether the glow effect is active
+    instance.glowEffect = moonshine(moonshine.effects.glow) -- Initialize the glow effect
+    instance.glowEffect.glow.strength = 30 -- Set the glow strength
     return instance
 end
 
 function DropZone:draw()
-    love.graphics.setColor(0.3, 0.3, 0.3)
-    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    if self.isGlowing then
+        -- Apply the glow effect
+        self.glowEffect(function()
+            love.graphics.setColor(0.3, 0.3, 0.3)
+            love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+        end)
+    else
+        -- Draw without the glow effect
+        love.graphics.setColor(0.3, 0.3, 0.3)
+        love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    end
+
+    -- Draw the border
     love.graphics.setColor(1, 1, 1)
     love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 end
@@ -26,6 +42,10 @@ end
 function DropZone:isInside(x, y, width, height)
     return x + width > self.x and x < self.x + self.width and
            y + height > self.y and y < self.y + self.height
+end
+
+function DropZone:setGlowing(isGlowing)
+    self.isGlowing = isGlowing
 end
 
 return DropZone
