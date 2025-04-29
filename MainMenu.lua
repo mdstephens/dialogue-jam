@@ -13,11 +13,9 @@ function MainMenu:new()
     -- Initialize drop zone
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
-    local dropZoneWidth = 900
-    local dropZoneHeight = 300
-    local dropZoneX = (screenWidth - dropZoneWidth) / 2
-    local dropZoneY = screenHeight / 3 - dropZoneHeight / 2
-    instance.dropZone = DropZone:new(dropZoneX, dropZoneY, dropZoneWidth, dropZoneHeight)
+    local dropZoneX = (screenWidth - DropZone.width) / 2
+    local dropZoneY = screenHeight / 3 - DropZone.height / 2
+    instance.dropZone = DropZone:new(dropZoneX, dropZoneY)
 
     -- Initialize menu cards
     local cardXOffsets = {screenWidth * 0.3, screenWidth * 0.7}

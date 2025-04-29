@@ -41,13 +41,11 @@ function love.load()
     mainMenu = MainMenu:new()
 
     -- Calculate dynamic position for the drop zone
-    local dropZoneWidth = 900
-    local dropZoneHeight = 300
-    local dropZoneX = (screenWidth - dropZoneWidth) / 2
-    local dropZoneY = screenHeight / 3 - dropZoneHeight / 2
+    local dropZoneX = (screenWidth - DropZone.width) / 2
+    local dropZoneY = screenHeight / 3 - DropZone.height / 2
 
     -- Create the drop zone
-    dropZone = DropZone:new(dropZoneX, dropZoneY, dropZoneWidth, dropZoneHeight)
+    dropZone = DropZone:new(dropZoneX, dropZoneY)
 
     -- Read Dialogue CSV
     dialogueTree = CSVReader.readDialogue("Dialogue.csv")
