@@ -8,7 +8,6 @@ function MainMenu:new()
     local instance = setmetatable({}, MainMenu)
     instance.cards = {}
     instance.dropZone = nil
-    instance.promptText = "Dialog game"
 
     -- Initialize drop zone
     local screenWidth = love.graphics.getWidth()
@@ -16,6 +15,7 @@ function MainMenu:new()
     local dropZoneX = (screenWidth - DropZone.width) / 2
     local dropZoneY = screenHeight / 3 - DropZone.height / 2
     instance.dropZone = DropZone:new(dropZoneX, dropZoneY)
+    instance.dropZone:setPromptText("Dialog game") -- Set the prompt text here
 
     -- Initialize menu cards
     local cardXOffsets = {screenWidth * 0.3, screenWidth * 0.7}
@@ -45,10 +45,6 @@ end
 function MainMenu:draw()
     -- Draw the drop zone
     self.dropZone:draw()
-
-    -- Draw the prompt text
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print(self.promptText, self.dropZone.x, self.dropZone.textY)
 
     -- Draw all cards
     for _, card in ipairs(self.cards) do

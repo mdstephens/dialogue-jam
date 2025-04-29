@@ -18,7 +18,12 @@ function DropZone:new(x, y)
     instance.isGlowing = false -- Whether the glow effect is active
     instance.glowEffect = moonshine(moonshine.effects.glow) -- Initialize the glow effect
     instance.glowEffect.glow.strength = 30 -- Set the glow strength
+    instance.promptText = "" -- Initialize prompt text
     return instance
+end
+
+function DropZone:setPromptText(text)
+    self.promptText = text
 end
 
 function DropZone:draw()
@@ -27,16 +32,24 @@ function DropZone:draw()
         self.glowEffect(function()
             love.graphics.setColor(0.3, 0.3, 0.3)
             love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+             -- Draw the border
+            love.graphics.setColor(1, 1, 1)
+            love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
         end)
     else
         -- Draw without the glow effect
         love.graphics.setColor(0.3, 0.3, 0.3)
         love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+         -- Draw the border
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
     end
 
-    -- Draw the border
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+    -- Draw the prompt text
+    if self.promptText and self.promptText ~= "" then
+        love.graphics.setColor(1, 1, 1)
+        love.graphics.print(self.promptText, self.x, self.textY)
+    end
 end
 
 function DropZone:isInside(x, y, width, height)

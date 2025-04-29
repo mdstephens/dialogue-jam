@@ -61,7 +61,7 @@ end
 
 function loadDialogueElem(prompt, responses)
     clearCards()
-    promptText = prompt
+    dropZone:setPromptText(prompt) -- Set the prompt text on the drop zone
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
 
