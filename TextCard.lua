@@ -1,12 +1,16 @@
 local TextCard = {}
 TextCard.__index = TextCard
 
-function TextCard:new(x, y, width, height, text, key)
+-- Class-level properties for card dimensions
+TextCard.width = 500
+TextCard.height = 175
+
+function TextCard:new(x, y, text, key)
     local instance = setmetatable({}, TextCard)
     instance.x = x
     instance.y = y
-    instance.width = width
-    instance.height = height
+    instance.width = TextCard.width -- Use class-level width
+    instance.height = TextCard.height -- Use class-level height
     instance.text = text
     instance.key = key
     instance.isDragging = false
@@ -16,7 +20,7 @@ function TextCard:new(x, y, width, height, text, key)
     instance.vy = 0 -- Velocity in the y direction
     instance.ax = 0 -- Acceleration in the x direction
     instance.ay = 0 -- Acceleration in the y direction
-    instance.damping = .9 -- Damping factor to reduce velocity over time
+    instance.damping = 0.9 -- Damping factor to reduce velocity over time
     instance.springStrength = 9 -- Spring strength for the jiggle effect
     return instance
 end
