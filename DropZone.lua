@@ -4,6 +4,7 @@ DropZone.__index = DropZone
 -- Class-level properties for drop zone dimensions
 DropZone.width = 900
 DropZone.height = 300
+DropZone.TextOffset = 40
 
 function DropZone:new(x, y)
     local instance = setmetatable({}, DropZone)
@@ -11,6 +12,7 @@ function DropZone:new(x, y)
     instance.y = y
     instance.width = DropZone.width -- Use class-level width
     instance.height = DropZone.height -- Use class-level height
+    instance.textY = instance.y - DropZone.TextOffset -- Y position for the text above the drop zone
     return instance
 end
 

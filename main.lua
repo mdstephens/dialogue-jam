@@ -110,7 +110,7 @@ function love.draw()
 
             -- Draw the text box above the drop zone
             love.graphics.setColor(1, 1, 1)
-            love.graphics.print(promptText, dropZone.x, dropZone.y - 30)
+            love.graphics.print(promptText, dropZone.x, dropZone.textY)
 
             -- Draw all cards
             for _, card in ipairs(cards) do
