@@ -65,6 +65,8 @@ function love.load()
         print("ERROR: Could not load root node from Dialogue.csv")
         -- Handle error appropriately, maybe show an error message
     end
+
+    currentState = "menu" -- Start at the menu
 end
 
 function clearCards()
@@ -207,12 +209,11 @@ function love.draw()
                 local scaleY = availableHeight / treeHeight
                 local scale = math.min(scaleX, scaleY, 1.0) -- Don't scale up if tree is small
 
-                 -- 5. Calculate offsets for centering (optional)
+                -- 5. Calculate offsets for centering (optional)
                 local scaledTreeWidth = treeWidth * scale
                 local scaledTreeHeight = treeHeight * scale
                 local offsetX = (windowWidth - scaledTreeWidth) / 2
                 local offsetY = (windowHeight - scaledTreeHeight) / 2
-
 
                 -- 6. Apply transformations and render
                 love.graphics.push()
@@ -220,6 +221,17 @@ function love.draw()
                 love.graphics.scale(scale, scale)         -- Apply scaling
                 TreeRenderer.render_tree(layoutData)      -- Render using the pre-calculated layout
                 love.graphics.pop()
+
+                -- Draw the "Back to Menu" button
+                local buttonWidth = 300
+                local buttonHeight = 75
+                local buttonX = (windowWidth - buttonWidth) / 2
+                local buttonY = windowHeight - buttonHeight - 20 -- 20px padding from the bottom
+
+                love.graphics.setColor(0.2, 0.2, 0.8) -- Button color
+                love.graphics.rectangle("fill", buttonX, buttonY, buttonWidth, buttonHeight)
+                love.graphics.setColor(1, 1, 1) -- Text color
+                love.graphics.printf("Back to Menu", buttonX, buttonY + 15, buttonWidth, "center")
             else
                 love.graphics.print("Error: Cannot display tree - root node not loaded.", 10, 10)
             end
@@ -233,6 +245,16 @@ function love.mousepressed(x, y, button, istouch, presses)
     elseif currentState == "game" then
         for _, card in ipairs(cards) do
             card:mousepressed(x, y, button)
+        end
+    elseif currentState == "tree" then
+        -- Check if the "Back to Menu" button is clicked
+        local buttonWidth = 200
+        local buttonHeight = 50
+        local buttonX = (love.graphics.getWidth() - buttonWidth) / 2
+        local buttonY = love.graphics.getHeight() - buttonHeight - 30
+
+        if x >= buttonX and x <= buttonX + buttonWidth and y >= buttonY and y <= buttonY + buttonHeight then
+            love.load()
         end
     end
 end
