@@ -30,7 +30,7 @@ function DropZone:draw()
     if self.isGlowing then
         -- Apply the glow effect
         self.glowEffect(function()
-            love.graphics.setColor(0.3, 0.3, 0.3)
+            love.graphics.setColor(love.math.colorFromBytes(70, 43, 16, 80))
             love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
              -- Draw the border
             love.graphics.setColor(1, 1, 1)
@@ -38,7 +38,7 @@ function DropZone:draw()
         end)
     else
         -- Draw without the glow effect
-        love.graphics.setColor(0.3, 0.3, 0.3)
+        love.graphics.setColor(love.math.colorFromBytes(70, 43, 16, 40))
         love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
          -- Draw the border
         love.graphics.setColor(1, 1, 1)
