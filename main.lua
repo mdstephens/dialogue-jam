@@ -84,15 +84,24 @@ function loadDialogueNode(node)
     local cardYOffsets = {screenHeight * 0.6, screenHeight * 0.6, screenHeight * 0.8, screenHeight * 0.8}
 
     -- Store responses and positions for delayed spawning
-    responses = {} -- Make sure this is a global or accessible variable
+    responses = {}
     for k, v in pairs(node.responses) do
         table.insert(responses, {text = k, key = v})
     end
 
     spawnTimer = 0
-    spawnIndex = 1
+    spawnIndex = 2 -- Start at 2 because the first card will be spawned immediately
 
-    -- Function to spawn cards with delay
+    -- Spawn the first card immediately
+    if #responses > 0 then
+        local firstResponse = responses[1]
+        local x = cardXOffsets[1] - TextCard.width / 2
+        local y = cardYOffsets[1] - TextCard.height / 2
+        table.insert(cards, TextCard:new(x, y, firstResponse.text, firstResponse.key))
+
+    end
+
+    -- Function to spawn remaining cards with delay
     function spawnNextCard()
         if spawnIndex <= #responses then
             local response = responses[spawnIndex]
