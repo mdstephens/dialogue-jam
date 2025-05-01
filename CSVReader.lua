@@ -31,32 +31,40 @@ end
 function CSVReader.read(filename)
     local data = {}
     local headers = {}
-    local file = io.open(filename, "r")
-    if not file then
+    
+    -- Read the entire file content using love.filesystem
+    local fileContent = love.filesystem.read(filename)
+    if not fileContent then
         error("Could not open file: " .. filename)
     end
-    
-    local headerLine = file:read("*l")    
+
+    -- Split the file content into lines
+    local lines = {}
+    for line in fileContent:gmatch("[^\r\n]+") do
+        table.insert(lines, line)
+    end
+
+    -- Parse the header line
+    local headerLine = lines[1]
     if headerLine then
         headers = parseCSVLine(headerLine)
     end
-    
-    local i = 1
-    for line in file:lines() do
-        i = i + 1        
+
+    -- Parse the remaining lines
+    for i = 2, #lines do
+        local line = lines[i]
         local values = parseCSVLine(line)
         local row = {}
-        for i, value in ipairs(values) do
-            if i <= #headers then
-                row[headers[i]] = value
+        for j, value in ipairs(values) do
+            if j <= #headers then
+                row[headers[j]] = value
             else
                 print("  WARNING: More values than headers!")
             end
         end    
         table.insert(data, row)
     end
-    
-    file:close()
+
     return data
 end
 
