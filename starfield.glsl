@@ -16,7 +16,7 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
 
     // Starfield parameters
     float speed = 0.003; // Speed of stars
-    float density = 200.0; // Number of stars
+    float density = 500.0; // Number of stars
     float baseBrightness = 0.8; // Base brightness of stars
 
     // Animate stars by shifting their y-coordinate
@@ -34,10 +34,11 @@ vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) 
     // Add independent twinkling effect
     vec2 starPosition = vec2(floor(x * density), floor(y * density));
     float randomPhase = random(starPosition + vec2(1.0, 1.0)) * 6.283; // Add variation to random input
-    float twinkle = 0.2 * sin(time * 5.0 + randomPhase) + 0.8;
+    float twinkle = 0.25 * sin(time * 5.0 + randomPhase) + 0.6;
 
-    // Final star brightness
-    vec3 starColor = vec3(star * baseBrightness * twinkle);
+    // Final star color (constant) and twinkling effect in alpha
+    vec3 starColor = vec3(baseBrightness); // Keep the star color constant
+    float starAlpha = star * twinkle; // Use twinkle to modulate opacity
 
-    return vec4(starColor, 1.0);
+    return vec4(starColor, starAlpha);
 }
