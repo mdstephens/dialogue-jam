@@ -27,8 +27,10 @@ end
 
 function TextCard:draw()
     -- Draw the rectangle
-    love.graphics.setColor(0.5, 0.5, 0.8)
+    love.graphics.setColor(love.math.colorFromBytes(201, 130, 64))
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    love.graphics.setColor(love.math.colorFromBytes(170, 120, 74))
+    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 
     -- Draw the text inside the rectangle with word wrapping and vertical centering
     love.graphics.setColor(1, 1, 1)
