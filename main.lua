@@ -18,17 +18,20 @@ local currentNode
 
 function love.load()
     -- Set font size for the text
-    local font = love.graphics.newFont("x14y24pxHeadUpDaisy.ttf", 28) -- Thanks @hicchicc for the font
+    local font = love.graphics.newFont("x14y24pxHeadUpDaisy.ttf", 36) -- Thanks @hicchicc for the font
     love.graphics.setFont(font) -- Set the font as the active font
 
     -- Set moonshine shaders
-    effect = moonshine(moonshine.effects.scanlines).chain(
-                        moonshine.effects.crt).chain(
+    effect = moonshine(
+                        moonshine.effects.pixelate).chain(
                         moonshine.effects.glow).chain(
-                        moonshine.effects.chromasep)
+                            moonshine.effects.chromasep).chain(
+                        moonshine.effects.scanlines).chain(
+                        moonshine.effects.crt)
+    effect.pixelate.size = {1.1,1.1}
     effect.crt.distortionFactor = {1.05, 1.06}
-    effect.scanlines.opacity = 0.6
-    effect.glow.strength = 15
+    effect.scanlines.opacity = 0.4
+    effect.glow.strength = 10
     effect.glow.min_luma = 0.2
 
     -- Load the starfield shader
@@ -145,10 +148,6 @@ function love.draw()
         elseif currentState == "game" then
             -- Draw the drop zone
             dropZone:draw()
-
-            -- Draw the text box above the drop zone
-            love.graphics.setColor(1, 1, 1)
-            love.graphics.print(currentNode.prompt, dropZone.x, dropZone.textY)
 
             -- Draw all cards
             for _, card in ipairs(cards) do

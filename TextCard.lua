@@ -31,7 +31,6 @@ function TextCard:draw()
     love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 
     -- Draw the text inside the rectangle with word wrapping and vertical centering
-    love.graphics.setColor(1, 1, 1)
     local padding = 10 -- Add some padding around the text
     local font = love.graphics.getFont()
     local maxWidth = self.width - 2 * padding -- Maximum width for wrapping
@@ -43,13 +42,26 @@ function TextCard:draw()
     -- Calculate vertical offset to center the text
     local verticalOffset = (self.height - textHeight) / 2
 
-    -- Draw the wrapped text
+    -- Draw the text outline
+    love.graphics.setColor(0, 0, 0) -- Black color for the outline
+    for _, offset in ipairs({{-1, -1}, {-1, 1}, {1, -1}, {1, 1}}) do
+        love.graphics.printf(
+            self.text,
+            self.x + padding + offset[1], -- X position with padding and offset
+            self.y + verticalOffset + offset[2], -- Y position with vertical centering and offset
+            maxWidth,
+            "center"
+        )
+    end
+
+    -- Draw the main text
+    love.graphics.setColor(1, 1, 1) -- White color for the main text
     love.graphics.printf(
-        self.text, -- The text to draw
-        self.x + padding, -- X position with padding
-        self.y + verticalOffset, -- Y position with vertical centering
-        maxWidth, -- Maximum width for wrapping
-        "center" -- Align the text to the center
+        self.text,
+        self.x + padding,
+        self.y + verticalOffset,
+        maxWidth,
+        "center"
     )
 end
 
