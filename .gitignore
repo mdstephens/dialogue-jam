@@ -32,7 +32,6 @@ luac.out
 *.dylib
 
 # Executables
-*.exe
 *.out
 *.app
 *.i*86
@@ -43,3 +42,5 @@ luac.out
 .vscode/launch.json
 
 .vscode/
+
+dialogue-jam.love
