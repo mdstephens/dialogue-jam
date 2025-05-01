@@ -18,6 +18,7 @@ local currentNode
 local spawnTimer = 0
 local spawnIndex = 1
 local responses = {} -- Define responses table
+local verification
 
 function love.load()
     -- Set font size for the text
@@ -259,6 +260,7 @@ function love.mousereleased(x, y, button, istouch, presses)
                     local nextNode = currentNode.childrenByKey[card.text] -- Use card.text for lookup
                     if nextNode then
                         loadDialogueNode(nextNode)
+                        break
                     else
                         print("Warning: No node found for response: " .. card.text)
                         -- Decide what to do here - maybe stay on the current node or end dialogue?
@@ -266,9 +268,11 @@ function love.mousereleased(x, y, button, istouch, presses)
                         print("End of route (no next node).")
                         clearCards()
                         currentState = "tree" -- Show tree when dialogue ends here
+                        break
                     end
                 else
-                    print("End of route.")
+                    verification = card.text
+                    print("End of route. Verification is: " .. verification)
                     clearCards()
                     currentState = "tree"
                 end
