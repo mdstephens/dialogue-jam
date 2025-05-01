@@ -9,6 +9,8 @@ function TextCard:new(x, y, text, key)
     local instance = setmetatable({}, TextCard)
     instance.x = x
     instance.y = y
+    instance.lastX = x -- Cache the initial position
+    instance.lastY = y -- Cache the initial position
     instance.width = TextCard.width -- Use class-level width
     instance.height = TextCard.height -- Use class-level height
     instance.text = text
@@ -16,22 +18,19 @@ function TextCard:new(x, y, text, key)
     instance.isDragging = false
     instance.offsetX = 0
     instance.offsetY = 0
-    instance.vx = 0 -- Velocity in the x direction
-    instance.vy = 0 -- Velocity in the y direction
-    instance.ax = 0 -- Acceleration in the x direction
-    instance.ay = 0 -- Acceleration in the y direction
     instance.damping = 0.9 -- Damping factor to reduce velocity over time
-    instance.springStrength = 9 -- Spring strength for the jiggle effect
+    instance.lerpSpeed = 10 -- Speed of interpolation for dragging
     return instance
 end
 
 function TextCard:draw()
     -- Draw the rectangle
-    love.graphics.setColor(0.5, 0.5, 0.8)
+    love.graphics.setColor(love.math.colorFromBytes(201, 130, 64, 200))
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    love.graphics.setColor(love.math.colorFromBytes(170, 120, 74))
+    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
 
     -- Draw the text inside the rectangle with word wrapping and vertical centering
-    love.graphics.setColor(1, 1, 1)
     local padding = 10 -- Add some padding around the text
     local font = love.graphics.getFont()
     local maxWidth = self.width - 2 * padding -- Maximum width for wrapping
@@ -43,13 +42,26 @@ function TextCard:draw()
     -- Calculate vertical offset to center the text
     local verticalOffset = (self.height - textHeight) / 2
 
-    -- Draw the wrapped text
+    -- Draw the text outline
+    love.graphics.setColor(0, 0, 0) -- Black color for the outline
+    for _, offset in ipairs({{-1, -1}, {-1, 1}, {1, -1}, {1, 1}}) do
+        love.graphics.printf(
+            self.text,
+            self.x + padding + offset[1], -- X position with padding and offset
+            self.y + verticalOffset + offset[2], -- Y position with vertical centering and offset
+            maxWidth,
+            "center"
+        )
+    end
+
+    -- Draw the main text
+    love.graphics.setColor(1, 1, 1) -- White color for the main text
     love.graphics.printf(
-        self.text, -- The text to draw
-        self.x + padding, -- X position with padding
-        self.y + verticalOffset, -- Y position with vertical centering
-        maxWidth, -- Maximum width for wrapping
-        "center" -- Align the text to the center
+        self.text,
+        self.x + padding,
+        self.y + verticalOffset,
+        maxWidth,
+        "center"
     )
 end
 
@@ -57,8 +69,8 @@ function TextCard:mousepressed(x, y, button)
     if button == 1 then -- Left mouse button
         if x >= self.x and x <= self.x + self.width and y >= self.y and y <= self.y + self.height then
             self.isDragging = true
-            self.offsetX = x - self.x
-            self.offsetY = y - self.y
+            self.offsetX = x - self.x -- Correctly calculate the offset
+            self.offsetY = y - self.y -- Correctly calculate the offset
         end
     end
 end
@@ -66,6 +78,9 @@ end
 function TextCard:mousereleased(button)
     if button == 1 then -- Left mouse button
         self.isDragging = false
+        -- Save the last position when dragging stops
+        self.lastX = self.x
+        self.lastY = self.y
     end
 end
 
@@ -74,34 +89,18 @@ function TextCard:update(dt)
         -- Get the current mouse position
         local mouseX, mouseY = love.mouse.getPosition()
 
-        -- Calculate the spring force to make the card follow the mouse
+        -- Calculate the target position using the offset
         local targetX = mouseX - self.offsetX
         local targetY = mouseY - self.offsetY
-        self.ax = (targetX - self.x) * self.springStrength
-        self.ay = (targetY - self.y) * self.springStrength
 
-        -- Clamp acceleration to prevent extreme values
-        local maxAcceleration = 2000
-        self.ax = math.min(math.max(self.ax, -maxAcceleration), maxAcceleration)
-        self.ay = math.min(math.max(self.ay, -maxAcceleration), maxAcceleration)
-
-        -- Update velocity based on acceleration
-        self.vx = self.vx + self.ax * dt
-        self.vy = self.vy + self.ay * dt
+        -- Interpolate the card's position toward the target position
+        self.x = self.x + (targetX - self.x) * self.lerpSpeed * dt
+        self.y = self.y + (targetY - self.y) * self.lerpSpeed * dt
     else
-        -- Apply damping to slow down the card when not dragging
-        self.vx = self.vx * self.damping
-        self.vy = self.vy * self.damping
+        -- Keep the card at its last saved position
+        self.x = self.lastX
+        self.y = self.lastY
     end
-
-    -- Clamp velocity to prevent extreme values
-    local maxVelocity = 500
-    self.vx = math.min(math.max(self.vx, -maxVelocity), maxVelocity)
-    self.vy = math.min(math.max(self.vy, -maxVelocity), maxVelocity)
-
-    -- Update position based on velocity
-    self.x = self.x + self.vx * dt
-    self.y = self.y + self.vy * dt
 end
 
 function TextCard:isInsideDropZone(dropZone)

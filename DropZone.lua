@@ -16,8 +16,9 @@ function DropZone:new(x, y)
     instance.height = DropZone.height -- Use class-level height
     instance.textY = instance.y - DropZone.TextOffset -- Y position for the text above the drop zone
     instance.isGlowing = false -- Whether the glow effect is active
-    instance.glowEffect = moonshine(moonshine.effects.glow) -- Initialize the glow effect
-    instance.glowEffect.glow.strength = 30 -- Set the glow strength
+    --instance.glowEffect = moonshine(moonshine.effects.gaussianblur) -- Initialize the glow effect
+    --instance.glowEffect.glow.strength = 30 -- Set the glow strength
+    --instance.glowEffect.glow.min_luma = 0.
     instance.promptText = "" -- Initialize prompt text
     return instance
 end
@@ -29,16 +30,16 @@ end
 function DropZone:draw()
     if self.isGlowing then
         -- Apply the glow effect
-        self.glowEffect(function()
-            love.graphics.setColor(0.3, 0.3, 0.3)
+        --self.glowEffect(function()
+            love.graphics.setColor(love.math.colorFromBytes(70, 43, 16, 150))
             love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
              -- Draw the border
             love.graphics.setColor(1, 1, 1)
             love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
-        end)
+       --end)
     else
         -- Draw without the glow effect
-        love.graphics.setColor(0.3, 0.3, 0.3)
+        love.graphics.setColor(love.math.colorFromBytes(70, 43, 16, 40))
         love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
          -- Draw the border
         love.graphics.setColor(1, 1, 1)
@@ -48,7 +49,7 @@ function DropZone:draw()
     -- Draw the prompt text
     if self.promptText and self.promptText ~= "" then
         love.graphics.setColor(1, 1, 1)
-        love.graphics.print(self.promptText, self.x, self.textY)
+        love.graphics.print(self.promptText, self.x, self.textY - 10)
     end
 end
 
