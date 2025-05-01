@@ -127,7 +127,7 @@ function love.update(dt)
         -- Spawn cards with a delay
         if spawnIndex <= #responses then -- Use the correct responses table
             spawnTimer = spawnTimer + dt
-            if spawnTimer >= 0.5 then -- 0.5-second delay
+            if spawnTimer >= 0.4 then -- 0.4-second delay
                 spawnTimer = 0
                 spawnNextCard()
             end
