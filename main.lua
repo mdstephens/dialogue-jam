@@ -191,6 +191,17 @@ function love.draw()
             end
         elseif currentState == "tree" then
             if rootNode then
+                -- Display the verification code at the top of the tree
+                local windowWidth = love.graphics.getWidth()
+                love.graphics.setColor(1, 1, 1) -- White color for the text
+                love.graphics.printf(
+                    "Your Verification Code Was: " .. (verification or "N/A"),
+                    0,
+                    10, -- Position at the top of the screen
+                    windowWidth,
+                    "center"
+                )
+
                 -- 1. Get layout data
                 local layoutData = TreeRenderer.layout_tree(rootNode, 0, 0)
 
@@ -198,7 +209,7 @@ function love.draw()
                 local treeWidth, treeHeight = getLayoutBounds(layoutData)
 
                 -- 3. Get window dimensions
-                local windowWidth, windowHeight = love.graphics.getDimensions()
+                local windowHeight = love.graphics.getHeight()
 
                 -- 4. Calculate scale factor (with padding)
                 local padding = 40 -- pixels padding on each side
