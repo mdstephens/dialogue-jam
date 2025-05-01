@@ -22,7 +22,7 @@ function TextCard:new(x, y, text, key)
     instance.lerpSpeed = 10 -- Speed of interpolation for dragging
 
     -- Add random drifting velocity
-    local driftSpeed = 15 -- Adjust this value for faster or slower drifting
+    local driftSpeed = 12 -- Adjust this value for faster or slower drifting
     instance.velocityX = (math.random() * 2 - 1) * driftSpeed
     instance.velocityY = (math.random() * 2 - 1) * driftSpeed
 
