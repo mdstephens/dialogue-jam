@@ -9,6 +9,11 @@ function MainMenu:new()
     instance.cards = {}
     instance.dropZone = nil
 
+    -- Load the boot-up audio
+    instance.bootUpSound = love.audio.newSource("Audio/BootUp.mp3", "stream")
+    instance.bootUpSound:setVolume(0.01) -- Adjust volume if needed
+    instance.bootUpSound:play() -- Play the audio when the menu is created
+
     -- Initialize drop zone
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -28,7 +33,6 @@ function MainMenu:new()
 end
 
 function MainMenu:update(dt)
-    
     local isAnyCardInside = false
     for _, card in ipairs(self.cards) do
         card:update(dt)
@@ -39,7 +43,6 @@ function MainMenu:update(dt)
     end
     -- Toggle the glow effect based on card overlap
     self.dropZone:setGlowing(isAnyCardInside)
-
 end
 
 function MainMenu:draw()
@@ -67,6 +70,12 @@ function MainMenu:mousereleased(x, y, button)
         if self.dropZone:isInside(card.x, card.y, card.width, card.height) then
             if card.key == "play" then
                 print("Play button used.")
+
+                -- Play the "PlayStarted" audio
+                local playStartedSound = love.audio.newSource("Audio/PlayStarted.mp3", "stream")
+                playStartedSound:setVolume(0.5) -- Adjust volume if needed
+                playStartedSound:play()
+
                 return "play" -- Signal to start the game
             elseif card.key == "exit" then
                 print("Exit button used.")

@@ -20,6 +20,12 @@ function TextCard:new(x, y, text, key)
     instance.offsetY = 0
     instance.damping = 0.9 -- Damping factor to reduce velocity over time
     instance.lerpSpeed = 10 -- Speed of interpolation for dragging
+
+    -- Play the "CardSpawned" audio when the card is created
+    local cardSpawnedSound = love.audio.newSource("Audio/CardSpawned.mp3", "static")
+    cardSpawnedSound:setVolume(0.5) -- Adjust volume if needed
+    cardSpawnedSound:play()
+
     return instance
 end
 

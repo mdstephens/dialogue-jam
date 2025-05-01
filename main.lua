@@ -15,6 +15,9 @@ local currentState = "menu" -- Start at the menu
 local mainMenu
 local rootNode
 local currentNode
+local spawnTimer = 0
+local spawnIndex = 1
+local responses = {} -- Define responses table
 
 function love.load()
     -- Set font size for the text
@@ -25,7 +28,7 @@ function love.load()
     effect = moonshine(
                         moonshine.effects.pixelate).chain(
                         moonshine.effects.glow).chain(
-                            moonshine.effects.chromasep).chain(
+                        moonshine.effects.chromasep).chain(
                         moonshine.effects.scanlines).chain(
                         moonshine.effects.crt)
     effect.pixelate.size = {1.1,1.1}
@@ -80,12 +83,24 @@ function loadDialogueNode(node)
     local cardXOffsets = {screenWidth * 0.3, screenWidth * 0.7, screenWidth * 0.3, screenWidth * 0.7}
     local cardYOffsets = {screenHeight * 0.6, screenHeight * 0.6, screenHeight * 0.8, screenHeight * 0.8}
 
-    local i = 1
+    -- Store responses and positions for delayed spawning
+    responses = {} -- Make sure this is a global or accessible variable
     for k, v in pairs(node.responses) do
-        if i <= 4 then
-            table.insert(cards, TextCard:new(cardXOffsets[i] - TextCard.width / 2, cardYOffsets[i] - TextCard.height / 2, k, v))
+        table.insert(responses, {text = k, key = v})
+    end
+
+    spawnTimer = 0
+    spawnIndex = 1
+
+    -- Function to spawn cards with delay
+    function spawnNextCard()
+        if spawnIndex <= #responses then
+            local response = responses[spawnIndex]
+            local x = cardXOffsets[spawnIndex] - TextCard.width / 2
+            local y = cardYOffsets[spawnIndex] - TextCard.height / 2
+            table.insert(cards, TextCard:new(x, y, response.text, response.key))
+            spawnIndex = spawnIndex + 1
         end
-        i = i + 1
     end
     currentNode = node
 end
@@ -99,17 +114,26 @@ function love.update(dt)
     if currentState == "menu" then
         mainMenu:update(dt)
     elseif currentState == "game" then
+        -- Spawn cards with a delay
+        if spawnIndex <= #responses then -- Use the correct responses table
+            spawnTimer = spawnTimer + dt
+            if spawnTimer >= 0.5 then -- 0.5-second delay
+                spawnTimer = 0
+                spawnNextCard()
+            end
+        end
+
         -- Update all cards
         local isAnyCardInside = false
-        for _, card in ipairs(cards) do -- Use the global `cards` variable
+        for _, card in ipairs(cards) do
             card:update(dt)
-            if dropZone:isInside(card.x, card.y, card.width, card.height) then -- Use the global `dropZone` variable
+            if dropZone:isInside(card.x, card.y, card.width, card.height) then
                 isAnyCardInside = true
                 break
             end
         end
         -- Toggle the glow effect based on card overlap
-        dropZone:setGlowing(isAnyCardInside) -- Use the global `dropZone` variable
+        dropZone:setGlowing(isAnyCardInside)
     end
 end
 
