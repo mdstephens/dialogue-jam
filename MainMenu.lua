@@ -15,7 +15,7 @@ function MainMenu:new()
     local dropZoneX = (screenWidth - DropZone.width) / 2
     local dropZoneY = screenHeight / 3 - DropZone.height / 2
     instance.dropZone = DropZone:new(dropZoneX, dropZoneY)
-    instance.dropZone:setPromptText("Dialog game") -- Set the prompt text here
+    instance.dropZone:setPromptText("Contract") -- Set the prompt text here
 
     -- Initialize menu cards
     local cardXOffsets = {screenWidth * 0.3, screenWidth * 0.7}
