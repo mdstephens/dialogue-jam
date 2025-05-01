@@ -21,6 +21,11 @@ function TextCard:new(x, y, text, key)
     instance.damping = 0.9 -- Damping factor to reduce velocity over time
     instance.lerpSpeed = 10 -- Speed of interpolation for dragging
 
+    -- Add random drifting velocity
+    local driftSpeed = 15 -- Adjust this value for faster or slower drifting
+    instance.velocityX = (math.random() * 2 - 1) * driftSpeed
+    instance.velocityY = (math.random() * 2 - 1) * driftSpeed
+
     -- Play the "CardSpawned" audio when the card is created
     local cardSpawnedSound = love.audio.newSource("Audio/CardSpawned.mp3", "static")
     cardSpawnedSound:setVolume(0.5) -- Adjust volume if needed
@@ -103,9 +108,13 @@ function TextCard:update(dt)
         self.x = self.x + (targetX - self.x) * self.lerpSpeed * dt
         self.y = self.y + (targetY - self.y) * self.lerpSpeed * dt
     else
+        -- Drift the card based on its velocity
+        self.x = self.x + self.velocityX * dt
+        self.y = self.y + self.velocityY * dt
+
         -- Keep the card at its last saved position
-        self.x = self.lastX
-        self.y = self.lastY
+        self.lastX = self.x
+        self.lastY = self.y
     end
 end
 
