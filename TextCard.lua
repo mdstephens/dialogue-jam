@@ -27,7 +27,7 @@ end
 
 function TextCard:draw()
     -- Draw the rectangle
-    love.graphics.setColor(love.math.colorFromBytes(201, 130, 64))
+    love.graphics.setColor(love.math.colorFromBytes(201, 130, 64, 200))
     love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
     love.graphics.setColor(love.math.colorFromBytes(170, 120, 74))
     love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
