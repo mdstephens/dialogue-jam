@@ -1,4 +1,4 @@
-local Paths = require("src/Paths")
+local Paths = require("/src/Paths")
 local moonshine = require(Paths.Lib.Moonshine)
 
 local DropZone = {}

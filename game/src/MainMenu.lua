@@ -1,4 +1,4 @@
-local Paths = require("src/Paths")
+local Paths = require("/src/Paths")
 local DropZone = require(Paths.SRC.DropZone)
 local TextCard = require(Paths.SRC.TextCard)
 

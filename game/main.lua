@@ -1,6 +1,6 @@
 io.stdout:setvbuf('no')
 
-local Paths = require("src/Paths")
+local Paths = require("/src/Paths")
 local MainMenu = require(Paths.SRC.MainMenu)
 local TextCard = require(Paths.SRC.TextCard)
 local DropZone = require(Paths.SRC.DropZone)
