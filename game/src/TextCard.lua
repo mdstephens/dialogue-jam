@@ -1,9 +1,12 @@
+local Paths = require("/src/Paths")
+
 local TextCard = {}
 TextCard.__index = TextCard
 
 -- Class-level properties for card dimensions
 TextCard.width = 500
 TextCard.height = 175
+
 
 function TextCard:new(x, y, text, key)
     local instance = setmetatable({}, TextCard)
@@ -27,7 +30,7 @@ function TextCard:new(x, y, text, key)
     instance.velocityY = (math.random() * 2 - 1) * driftSpeed
 
     -- Play the "CardSpawned" audio when the card is created
-    local cardSpawnedSound = love.audio.newSource("Audio/CardSpawned.mp3", "static")
+    local cardSpawnedSound = love.audio.newSource(Paths.Audio.CardSpawned, "static")
     cardSpawnedSound:setVolume(0.5) -- Adjust volume if needed
     cardSpawnedSound:play()
 

@@ -1,4 +1,5 @@
-local moonshine = require("moonshine")
+local Paths = require("src/Paths")
+local moonshine = require(Paths.Lib.Moonshine)
 
 local DropZone = {}
 DropZone.__index = DropZone

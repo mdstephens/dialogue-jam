@@ -1,5 +1,6 @@
-local Node = require("LOVElyTree/node")
-local CSVReader = require("CSVReader")
+local Paths = require("src/Paths")
+local Node = require (Paths.Lib.LOVElyTreeNode)
+local CSVReader = require(Paths.SRC.CSVReader)
 
 local DialogueTree = {}
 

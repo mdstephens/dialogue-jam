@@ -1,12 +1,12 @@
 io.stdout:setvbuf('no')
 
-local MainMenu = require("MainMenu")
-local TextCard = require("TextCard")
-local DropZone = require("DropZone")
-local CSVReader = require("CSVReader")
-local moonshine = require 'moonshine'
-local DialogueTree = require("DialogueTree")
-local TreeRenderer = require("LOVElyTree.tree_render") -- Require the renderer
+local Paths = require("src/Paths")
+local MainMenu = require(Paths.SRC.MainMenu)
+local TextCard = require(Paths.SRC.TextCard)
+local DropZone = require(Paths.SRC.DropZone)
+local moonshine = require (Paths.Lib.Moonshine)
+local DialogueTree = require(Paths.SRC.DialogueTree)
+local TreeRenderer = require(Paths.Lib.LOVElyTreeRenderer)
 
 local cards = {}
 local dropZone
@@ -22,7 +22,7 @@ local verification
 
 function love.load()
     -- Set font size for the text
-    local font = love.graphics.newFont("x14y24pxHeadUpDaisy.ttf", 36) -- Thanks @hicchicc for the font
+    local font = love.graphics.newFont(Paths.Fonts.MainFont, 36) -- Thanks @hicchicc for the font
     love.graphics.setFont(font) -- Set the font as the active font
 
     -- Set moonshine shaders
@@ -39,7 +39,7 @@ function love.load()
     effect.glow.min_luma = 0.2
 
     -- Load the starfield shader
-    starfieldShader = love.graphics.newShader("starfield.glsl")
+    starfieldShader = love.graphics.newShader(Paths.Shaders.Starfield)
 
     -- Send resolution to the shader
     local screenWidth = love.graphics.getWidth()
@@ -57,7 +57,7 @@ function love.load()
     dropZone = DropZone:new(dropZoneX, dropZoneY)
 
     -- Store the root node (we don't need allNodes for rendering with TreeRenderer)
-    local _, loadedRoot = DialogueTree.load("Dialogue.csv")
+    local _, loadedRoot = DialogueTree.load(Paths.CSV.Dialogue)
     rootNode = loadedRoot -- Assign to the variable accessible by love.draw
     if rootNode then
         loadDialogueNode(rootNode)

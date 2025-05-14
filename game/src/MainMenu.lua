@@ -1,8 +1,9 @@
+local Paths = require("src/Paths")
+local DropZone = require(Paths.SRC.DropZone)
+local TextCard = require(Paths.SRC.TextCard)
+
 local MainMenu = {}
 MainMenu.__index = MainMenu
-
-local TextCard = require("TextCard")
-local DropZone = require("DropZone")
 
 function MainMenu:new()
     local instance = setmetatable({}, MainMenu)
@@ -53,7 +54,7 @@ function MainMenu:update(dt)
     -- Check if all cards have spawned and play the main theme
     if not self.mainThemeStarted and self:allCardsSpawned() then
         self.mainThemeStarted = true
-        local mainTheme = love.audio.newSource("Audio/MainTheme.mp3", "stream")
+        local mainTheme = love.audio.newSource(Paths.Audio.MainTheme, "stream")
         mainTheme:setVolume(0.01) -- Adjust volume if needed
         mainTheme:setLooping(true) -- Enable looping
         mainTheme:play()
@@ -98,7 +99,7 @@ function MainMenu:mousereleased(x, y, button)
                 print("Play button used.")
 
                 -- Play the "PlayStarted" audio
-                local playStartedSound = love.audio.newSource("Audio/PlayStarted.mp3", "stream")
+                local playStartedSound = love.audio.newSource(Paths.Audio.PlayStarted, "stream")
                 playStartedSound:setVolume(0.3) -- Adjust volume if needed
                 playStartedSound:play()
                 return "play" -- Signal to start the game
